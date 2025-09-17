@@ -18,8 +18,8 @@ jobs:
     - name: Build with Maven
       run: mvn compile
 
-      security-check:
-    runs-on: self-hosted
+   security-check:
+    runs-on: Agent-1
     needs: compile
 
     steps:
@@ -38,5 +38,4 @@ jobs:
       run: sudo apt install gitleaks -y
     - name: Gitleaks Code Scan
       run: gitleaks detect source . -r gitleaks-report.json -f json
-
       
