@@ -35,8 +35,12 @@ jobs:
           Expand-Archive trivy.zip -DestinationPath $Env:USERPROFILE\trivy
           echo "$Env:USERPROFILE\trivy" | Out-File -Append -FilePath $Env:GITHUB_PATH
 
-      - name: Trivy FS Scan
-        run: trivy fs --format table --output fs-report.json .
+     - name: Trivy FS Scan
+       run: trivy fs --format table --output fs-report.json --exit-code 0 .
+
+     - name: Gitleaks Code Scan
+       run: gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 0
+
 
       # Install Gitleaks on Windows
       - name: Install Gitleaks
