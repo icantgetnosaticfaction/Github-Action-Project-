@@ -22,8 +22,8 @@ jobs:
         run: mvn compile
 
    security-check:
-    runs-on: Agent-1
-    needs: compile
+     runs-on: Agent-1
+     needs: compile
 
     steps:
       - uses: actions/checkout@v4
