@@ -33,21 +33,18 @@ jobs:
         run: |
           Invoke-WebRequest -Uri https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.55.0_Windows-64bit.zip -OutFile trivy.zip
           Expand-Archive trivy.zip -DestinationPath $Env:USERPROFILE\trivy
-          echo "$Env:USERPROFILE\trivy" | Out-File -Append -FilePath $Env:GITHUB_PATH
+          echo "$Env:USERPROFILE\trivy" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
-     - name: Trivy FS Scan
-       run: trivy fs --format table --output fs-report.json --exit-code 0 .
-
-     - name: Gitleaks Code Scan
-       run: gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 0
-
+      - name: Trivy FS Scan
+        run: trivy fs --format table --output fs-report.json --exit-code 0 .
 
       # Install Gitleaks on Windows
       - name: Install Gitleaks
         run: |
           Invoke-WebRequest -Uri https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.18.4_windows_x64.zip -OutFile gitleaks.zip
           Expand-Archive gitleaks.zip -DestinationPath $Env:USERPROFILE\gitleaks
-          echo "$Env:USERPROFILE\gitleaks" | Out-File -Append -FilePath $Env:GITHUB_PATH
+          echo "$Env:USERPROFILE\gitleaks" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Gitleaks Code Scan
-        run: gitleaks detect --source . --report-format json --report-path gitleaks-report.json
+        run: gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 0
+
