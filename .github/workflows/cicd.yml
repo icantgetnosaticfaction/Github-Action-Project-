@@ -19,7 +19,7 @@ jobs:
     - name: Build with Maven
       run: mvn compile
 
-   security_scan:
+  security_scan:
      runs-on: Agent-1
      needs: compile
      
