@@ -21,12 +21,9 @@ jobs:
 
   security_scan:
     runs-on: Agent-1
-    needs: compile
-
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: icantgetnosaticfaction/Github-Action-Project-.git
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Run Security Scan
         id: security_scan
