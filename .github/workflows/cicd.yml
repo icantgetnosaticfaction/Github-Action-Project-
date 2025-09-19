@@ -1,0 +1,60 @@
+name: CICD Pipeline 
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  compile:
+    runs-on: Agent-1
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn compile
+  
+  security-check:
+  runs-on: Agent-1
+  needs: compile
+
+  steps:
+    - uses: actions/checkout@v4
+
+    # Install Trivy on Windows
+    - name: Install Trivy
+      run: |
+        choco install trivy -y
+        trivy --version
+
+    - name: Trivy FS Scan
+      run: |
+        trivy fs . --format table --output fs-report.txt
+        trivy fs . --format json --output fs-report.json
+
+    # Install Gitleaks on Windows
+    - name: Install Gitleaks
+      run: |
+        choco install gitleaks -y
+        gitleaks version
+
+    - name: Gitleaks Code Scan
+      run: |
+        gitleaks detect --source . --report-path gitleaks-report.json --format json
+
+    # Upload reports as artifacts (optional but useful)
+    - name: Upload scan reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-scan-reports
+        path: |
+          fs-report.txt
+          fs-report.json
+          gitleaks-report.json
+
+      
