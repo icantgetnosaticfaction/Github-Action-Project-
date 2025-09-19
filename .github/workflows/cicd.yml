@@ -32,7 +32,7 @@ jobs:
         id: security_scan
         uses: icantgetnosaticfaction/github-action-security-scan@v1
         with:
-          github_token: ${{ https://github.com/icantgetnosaticfaction/Github-Action-Project- }}
+          github_token: ${{ secrets.Github-Action }}
 
       - name: Output Results
         run: |
